@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"log"
+	"os"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -60,9 +61,23 @@ type videoData struct {
     } `json:"_version"`
 }
 
+type env struct {
+    Uri string `json:"mongo-URI"`;
+}
+
 func main() {
+    envsByte, readErr := os.ReadFile("./.env")
+    if readErr != nil {
+        log.Fatal(readErr);
+    }
+    var newURI env;
+    err := json.Unmarshal(envsByte, &newURI);
+    if err != nil {
+        log.Fatal(err)
+    }
+    
     serverApiOpts := options.ServerAPI(options.ServerAPIVersion1);
-    opts := options.Client().ApplyURI("<YOUR-URI-HERE>").SetServerAPIOptions(serverApiOpts);
+    opts := options.Client().ApplyURI(newURI.Uri).SetServerAPIOptions(serverApiOpts);
 
     newClient, connErr := mongo.Connect(context.TODO(), opts);
     if connErr != nil {
