@@ -1,6 +1,6 @@
 # MongoDB with Python
 
-<img align="right" width="200" src="https://yt3.googleusercontent.com/ytc/AGIKgqOXF1VtgNKqE1_BFyrcI6388NnKa5zoAwzVDqPJiw=s900-c-k-c0x00ffffff-no-rj" alt="professor woshingo"/>
+<img align="right" width="200" src="https://static.wikia.nocookie.net/jojo/images/0/07/NoriakiKakyoincolor.png/revision/latest?cb=20170520230455&path-prefix=es" alt="professor woshingo"/>
 
 This repo shows how to connect to MongoDB using the official Python crate.
 
