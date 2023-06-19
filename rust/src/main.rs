@@ -15,6 +15,13 @@ fn print_db_info(db: &DatabaseSpecification) {
     println!(" - {} ({} mb)", db.name, db.size_on_disk as f64 / (1024.0 * 1024.0));
 }
 
+fn print_video_info(video: &Document) {
+    let title = video.get_str("title").unwrap();
+    let duration = video.get_i32("duration").unwrap() as f32 / 60.0;
+    let url = video.get_str("url").unwrap();
+    println!("{} ({} min)\n{}\n", title, duration, url);
+}
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     dotenv::parse()?;
@@ -54,7 +61,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // This trait is required to use `try_next()` on the cursor
     use futures::stream::TryStreamExt;
     while let Some(doc) = documents.try_next().await? {
-        println!(" - {}", doc.get_str("url").unwrap());
+        print_video_info(&doc);
     }
 
     Ok(())
