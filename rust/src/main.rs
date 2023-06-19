@@ -17,6 +17,8 @@ fn print_db_info(db: &DatabaseSpecification) {
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    dotenv::parse()?;
+
     let mongo_uri = env::var("MONGO_URI")
         .expect("please define the MONGO_URI env variable");
     // Create a mongodb client from a connection string
