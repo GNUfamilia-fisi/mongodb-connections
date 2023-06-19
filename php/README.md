@@ -9,6 +9,8 @@ This repo shows how to connect to MongoDB using the official PHP driver.
 
 - MongoDB PHP driver guide: <https://www.mongodb.com/docs/drivers/php/>
 - Official MongoDB PHP library: <https://www.mongodb.com/docs/php-library/current/tutorial/install-php-library/>
+- Official PHP package documentation: <https://www.php.net/mongodb>
+- PHP MongoDB official course: <https://learn.mongodb.com/courses/connecting-to-mongodb-in-php>
 
 ---
 
