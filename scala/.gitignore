@@ -1,0 +1,12 @@
+# sbt specific
+dist/*
+target/
+project/
+
+# Bloop
+.bsp
+
+# Metals
+.bloop/
+.metals/
+metals.sbt
