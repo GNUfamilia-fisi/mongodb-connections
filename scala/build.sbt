@@ -9,5 +9,11 @@ lazy val root = project
     scalaVersion := scala3Version,
 
     libraryDependencies += "org.scalameta" %% "munit" % "0.7.29" % Test,
-    libraryDependencies += ("org.mongodb.scala" %% "mongo-scala-driver" % "4.3.3").cross(CrossVersion.for3Use2_13)
+    libraryDependencies += ("org.mongodb.scala" %% "mongo-scala-driver" % "4.3.3").cross(CrossVersion.for3Use2_13),
   )
+
+resolvers ++= Seq(Classpaths.typesafeReleases)
+
+libraryDependencies ++= Seq(
+  "com.typesafe" % "config" % "1.4.2",
+)
