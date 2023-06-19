@@ -6,7 +6,7 @@
 
 # MongoDB with Scala
 
-<img align="right" width="200" src="https://yt3.googleusercontent.com/ytc/AGIKgqOXF1VtgNKqE1_BFyrcI6388NnKa5zoAwzVDqPJiw=s900-c-k-c0x00ffffff-no-rj" alt="professor woshingo"/>
+<img align="right" width="200" src="https://www.famousbirthdays.com/faces/woshingo-image.jpg" alt="professor woshingo"/>
 
 This repo shows how to connect an query data from MongoDB using the official
 Scala driver.
@@ -51,6 +51,10 @@ did, but then you face concepts like _typeclasses_, _higher kinded types_,
 _implicit parameters_, _monads_, _functors_, _applicatives_, _monoids_, etc.
 you realize that you don't know anything about real functional programming.
 
+- **The documentation**: I needed to spend almost two hours to figure out "the
+proper way" to load environment variables, and I'm not sure if I ended up
+doing it correctly.
+
 ## Running the code
 
 First you will need a running MongoDB cluster. You can use a local instance or
@@ -70,16 +74,23 @@ curl -fL https://github.com/coursier/coursier/releases/latest/download/cs-x86_64
 brew install coursier/formulas/coursier && cs setup
 ```
 
-After cloning the repo, create a `.env` file with your connection string:
+After cloning the repo, create a `.env` file with the following:
 
 ```sh
-# The MongoDB connection string
-MONGO_URI=mongodb+srv://<username>:<password>@<cluster-url>
+export MONGO_URI="<YOUR_CONNECTION_STRING>"
+export DB_NAME="<YOUR_DATABASE_NAME>"
+export DB_COLLECTION="<DB_COLLECTION_NAME>"
 ```
 
-Finally, you can run the code with:
+The [application.conf](./src/main/resources/application.conf) file will load
+its values from the environemnt variables, and will fallback to the defaults
+if not defined.
 
 ```sh
+# Load the environment variables
+source .env
+
+# Run the project
 # sbt is de facto build tool for Scala
 sbt run
 ```
@@ -88,10 +99,4 @@ sbt run
 
 ![Screenshot result](screenshot.png)
 
-## Next steps
-
-There are some interesting features that can be implemented usign this codebase, like:
-
-- HTTP API endpoints using Artix, Rocket or Warp.
-- Results pagination instead of showing the raw full list.
-- A frontend using Yew or other web frameworks.
+> Woshingo videos printed on the console
