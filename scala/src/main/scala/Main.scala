@@ -6,14 +6,12 @@ import scala.concurrent.Await
 import scala.concurrent.duration.DurationInt
 import scala.util.Using
 import docs_helpers.Helpers.DocumentObservable
-
-class MongoDB():
-  def connect(mongo_uri: String) =
-    println("hello world....")
+import com.typesafe.config.{ConfigFactory}
 
 @main def app: Unit = {
-  // Replace the placeholder with your Atlas connection string
-  val connectionString = "mongodb+srv://pandadiestro:rojoalsa1@hola-cluster.ll5kqmh.mongodb.net"
+  // val connectionString = "mongodb+srv://pandadiestro:rojoalsa1@hola-cluster.ll5kqmh.mongodb.net"
+  val connectionString = ConfigFactory.load().getString("cluster.mongo_uri")
+
   // Construct a ServerApi instance using the ServerApi.builder() method
   val serverApi = ServerApi.builder.version(ServerApiVersion.V1).build()
   val settings = MongoClientSettings
@@ -34,6 +32,8 @@ class MongoDB():
     )
 
     for video <- woshingo_videos do
-      println(video.getString("title"))
+      println(
+        video.getString("title") + "\n" + video.getString("url") + "\n\n"
+      )
   }
 }
