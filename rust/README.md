@@ -1,11 +1,11 @@
 <!-- markdownlint-disable MD033 -->
 # MongoDB with Rust
 
+<img align="right" width="200" src="https://yt3.googleusercontent.com/ytc/AGIKgqOXF1VtgNKqE1_BFyrcI6388NnKa5zoAwzVDqPJiw=s900-c-k-c0x00ffffff-no-rj" alt="professor woshingo"/>
+
 This repo shows how to connect to MongoDB using the official Rust crate.
 
 Some of the code here was intentionally made overcomplicated for learning purposes.
-
-<img align="right" width="200" src="https://yt3.googleusercontent.com/ytc/AGIKgqOXF1VtgNKqE1_BFyrcI6388NnKa5zoAwzVDqPJiw=s900-c-k-c0x00ffffff-no-rj" alt="professor woshingo"/>
 
 Resources used:
 
@@ -39,7 +39,10 @@ futures = "0.3.28"
 First you will need a running MongoDB cluster. You can use a local instance or
 preferably deploy a free tier cluster in the cloud using MongoDB Atlas.
 
-Then, you need to create a `.env` file with your connection string:
+Of course a recent version of Rust is also required. You can install it using
+[rustup](https://rustup.rs/).
+
+After cloning the repo, create a `.env` file with your connection string:
 
 ```sh
 # The MongoDB connection string
