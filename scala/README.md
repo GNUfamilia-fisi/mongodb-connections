@@ -1,8 +1,8 @@
 <!-- markdownlint-disable MD033 -->
 <!-- markdownlint-disable MD041 -->
-<img align="left" width="30" src="https://cdn-icons-png.flaticon.com/512/6132/6132220.png" />
+<span><img align="left" width="30" src="https://cdn-icons-png.flaticon.com/512/6132/6132220.png" /> </span>
 
-<img align="left" width="30" src="https://cdn.icon-icons.com/icons2/2415/PNG/512/mongodb_original_logo_icon_146424.png" />
+<span><img align="left" width="30" src="https://cdn.icon-icons.com/icons2/2415/PNG/512/mongodb_original_logo_icon_146424.png" /> </span>
 
 # MongoDB with Scala
 
@@ -22,6 +22,10 @@ Resources used:
 - Scala vs Java: <https://redwerk.com/blog/10-differences-between-scala-and-java/>
 - The Rust driver manual: <https://mongodb.github.io/mongo-rust-driver/manual/>
 
+> **Note**
+> The man at the right is Woshingo, a Mexican youtuber. He's there because
+> we needed to query data, and we had a json with all his YouTube videos at hand.
+
 ---
 
 ## About the code
@@ -33,7 +37,7 @@ It is statically typed but "feels dynamic" thanks to its "very expressive type
 system". It runs under the JVM and the browser. Scala can seamlessly integrate
 with existing Java codebases.
 
-This was my first time using Scala and I want to share some of my thoughs about
+This was my first time using Scala and I want to share some of my thoughts about
 it:
 
 - **The "21st century" thing**: Scala is often presented as a _write less, do
