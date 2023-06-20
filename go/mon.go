@@ -9,8 +9,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	env "mongo/src/dotenv"
-	utils "mongo/src/utils"
+	env "mongo/dotenv"
+	utils "mongo/utils"
 )
 
 type envURI struct {
@@ -22,7 +22,7 @@ var dbClient *mongo.Client;
 func main() {
     var newURI envURI;
 
-    res, err := env.GetFromEnv("./src/.env");
+    res, err := env.GetFromEnv("./.env");
     if err != nil { log.Fatal(err) }
 
     newURI.Uri = res["mongo-URI"]
