@@ -1,4 +1,3 @@
-import { Document } from 'mongodb';
 import { app } from './app.js';
 import { db } from './services/mongo.js';
 import { YoutubeVideo } from './structs/youtube_video.js';

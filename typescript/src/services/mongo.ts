@@ -10,6 +10,10 @@ async function connectToDatabase(): Promise<Db> {
   const client = new MongoClient(MONGO_URI);
   await client.connect();
 
+  process.on('exit', () => {
+    client.close();
+  });
+
   console.log('Sucesfully connected to MongoDB 🍃\n');
   console.log('Databases:');
   const dbs = await client.db().admin().listDatabases();
