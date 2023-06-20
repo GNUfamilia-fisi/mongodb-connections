@@ -2,3 +2,5 @@
 .env
 target/
 php/vendor/
+node_modules
+dist/
