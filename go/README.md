@@ -63,11 +63,7 @@ The `metadata` collection at the `sample_woshingo` database of the cluster used 
 > 
 > ```
 
-
-
-![video sample](https://cdn.discordapp.com/attachments/1052807350593003581/1120574756010344569/sample.mp4)
-
-
+https://github.com/GNUfamilia-fisi/mongodb-connections/assets/71461113/d6fa1943-72e5-4a24-824d-8359ac1f0553
 
 ### Before running the code
 
