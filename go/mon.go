@@ -2,25 +2,27 @@ package main
 
 import (
 	"context"
-	"encoding/json"
+	"fmt"
 	"log"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	env "mongo/dotenv"
-	utils "mongo/utils"
+	env "mongo/src/dotenv"
+	utils "mongo/src/utils"
 )
 
 type envURI struct {
     Uri string `json:"URI"`
 }
 
+var dbClient *mongo.Client;
+
 func main() {
     var newURI envURI;
 
-    res, err := env.GetFromEnv("./.env");
+    res, err := env.GetFromEnv("./src/.env");
     if err != nil { log.Fatal(err) }
 
     newURI.Uri = res["mongo-URI"]
@@ -28,42 +30,52 @@ func main() {
     serverApiOpts := options.ServerAPI(options.ServerAPIVersion1);
     opts := options.Client().ApplyURI(newURI.Uri).SetServerAPIOptions(serverApiOpts);
 
-    newClient, connErr := mongo.Connect(context.TODO(), opts);
-    if connErr != nil { log.Fatal(connErr) }
+    var connErr error;
+    
+    fmt.Println("Connecting to the cluster...");
 
-    dblist, listErr := newClient.ListDatabaseNames(context.TODO(), bson.D{}, options.ListDatabases());
+    dbClient, connErr := mongo.Connect(context.TODO(), opts);
+    if connErr != nil { log.Fatal(connErr) }
+    
+    fmt.Println();
+
+    dblist, listErr := dbClient.ListDatabaseNames(context.TODO(), bson.D{}, options.ListDatabases());
     if listErr != nil { log.Fatal(listErr) }
 
+    fmt.Println("Databases:");
     for i := range dblist {
-        println(dblist[i])
+        fmt.Println(dblist[i])
     }
 
-    filter := bson.D{
-        {"_type", "url"},
-    };
-    
-    database := "sample_woshingo";
+    var database string;
     collection := "metadata";
 
-    foo, err := utils.CheckDbName(newClient, database);
+    fmt.Printf("\nSelect database>> ");
+    fmt.Scan(&database);
+
+    fmt.Println();
+
+    fmt.Printf("Retrieving data...\n\n")
+    
+    filter := bson.D{};
+
+    foo, err := utils.CheckDbName(dbClient, database);
     if err != nil { log.Fatal(err) }
 
     if !foo {
         log.Println("Beware! you are trying to connect to a non-existing database, the server will create an empty one for you to access")
     }
 
-    metadataWoshDB := newClient.Database(database).Collection(collection);
+    metadataWoshDB := dbClient.Database(database).Collection(collection);
     
     cursor, cursorErr := metadataWoshDB.Find(context.TODO(), filter);
     if cursorErr != nil { log.Fatal(cursorErr) }
 
-    println(cursor)
-    
     var results []utils.VideoData;
     cursor.All(context.TODO(), &results);
 
     for _, elem := range results {
-        marsh, _ := json.Marshal(elem);
-        println(string(marsh));
+        fmt.Printf("Video: %s\n", elem.Title);
+        fmt.Printf("Duration: %d\n\n", elem.Duration)
     }
 }
