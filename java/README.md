@@ -61,3 +61,7 @@ mvn compile -X exec:java -D exec.mainClass=com.mongojava.app.App
 ```
 
 ## Results
+
+Here we print the full list of Woshingo videos, picking only the properties that interest us.
+
+https://github.com/GNUfamilia-fisi/mongodb-connections/assets/98111143/a9ba1de0-f23d-472a-b5d3-138ddba3becb
