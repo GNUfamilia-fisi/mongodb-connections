@@ -42,7 +42,7 @@ targets: [
 ]
 ```
 
-First we define a block of code that will run when the program exists, this
+First we define a block of code that will run when the program exits, this
 is mainly for cleanup the `libmongoc` resources.
 
 ```swift
@@ -56,8 +56,8 @@ defer {
 }
 ```
 
-The API is very straightforward and easy to use, here is basically all
-the code needed to print a whole collection:
+With this library you need to think async.
+Here is the code needed to print a whole collection:
 
 ```swift
 let db = client.db(DB_NAME)
