@@ -1,5 +1,5 @@
 <!-- markdownlint-disable MD033 -->
-# MongoDB with Rust
+# MongoDB with Java ☕
 
 <img align="right" width="200" src="https://weeklyosm.eu/wp-content/uploads/2019/05/adoptOpenJDK.jpg" alt="professor woshingo"/>
 
