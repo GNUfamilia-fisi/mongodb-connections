@@ -33,8 +33,8 @@ The MongoDB driver dependency is defined in the [Gemfile](GemFile).
 gem "mongo", "~> 2"
 ```
 
-Ammong all the programming languages available in this repo, I think that
-Ruby is the simplest to use.
+Ammng all the programming languages available in this repo, I think that
+Ruby is the simplest to use (frighteningly simple).
 
 ```ruby
 client = Mongo::Client.new(
@@ -81,3 +81,5 @@ ruby app.rb
 ## Results
 
 Here we print the full list of Woshingo videos, picking only the properties that interest us.
+
+https://github.com/GNUfamilia-fisi/mongodb-connections/assets/98111143/3d56d9c4-5c44-4ccc-a9fd-3425cf642c74
