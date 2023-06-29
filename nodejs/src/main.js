@@ -1,13 +1,179 @@
 import {
     MongoClient,
+    ObjectId,
     ServerApiVersion
 } from 'mongodb'
 
-import * as readline from 'node:readline/promises';
-import {stdin, stdout} from 'node:process'
+import {createServer} from 'node:http'
+ 
+//NOTE: this place has to handle all client requests
+ 
+const queryEditable = class {
+    constructor(title, description, thumbnail) {
+        this.title = title,
+        this.description = description,
+        this.thumbnail = thumbnail
+    }
+}
 
+const dataTemplate = class extends queryEditable {
+    constructor(_id) {
+        super()
+        this._id = _id
+    }
+}
+
+const deletefromDatabase = async (queryDoc) => {
+    const handle = mongoClient.db("hola").collection("hola")
+    return (await handle.deleteMany(queryDoc))
+}
+
+const insertAtDatabase = async (obj) => {
+    const handle = mongoClient.db("hola").collection("hola")
+    return (await handle.insertOne(obj))
+}
+
+const updateFromDatabase = async (filter, newValues) => {
+    const handler = mongoClient.db("hola").collection("hola")
+    return (await handler.updateMany(filter, newValues))
+}
+
+const Create = (request, response) => {
+    let body = []
+    let newVideo = new dataTemplate()
+    
+    request
+    .on("data", (chunk) => {
+        body.push(chunk)
+    })
+    .on("end", () => {
+        const newBody = Buffer.concat(body).toString()
+        const jsonVideo = JSON.parse(newBody)
+
+        newVideo.title = jsonVideo.title
+        newVideo.description = jsonVideo.description
+        newVideo.thumbnail = jsonVideo.thumbnail
+
+        insertAtDatabase(JSON.parse(newBody)).then(e => {
+            console.log("hola papu")
+            response.setHeader("Content-type", "application/json")
+            response.writeHead(200)
+            newVideo._id = e.insertedId.toString()
+            response.end(JSON.stringify(newVideo))
+        })
+
+        console.log(newVideo)
+    })
+}
+
+const Read = (response, id) => {
+    console.log(id)
+    run().then(e => {
+        let r = ""
+        let newVideo = new dataTemplate()
+        let comma = ""
+        if (id) {
+            e.forEach((elem, i) => {
+                newVideo.title = elem.title,
+                newVideo.description = elem.description,
+                newVideo.thumbnail = elem.thumbnail
+                newVideo._id = elem._id
+                comma = i === e.length - 1 ? "" : ","
+                if (id[1] === elem._id.toString()) {
+                    r += JSON.stringify(newVideo) + comma
+                }
+            })
+        }
+        else {
+            e.forEach((elem, i) => {
+                newVideo.title = elem.title,
+                newVideo.description = elem.description,
+                newVideo.thumbnail = elem.thumbnail
+                newVideo._id = elem._id
+                
+                comma = i === e.length - 1 ? "" : ","
+                r += JSON.stringify(newVideo) + comma
+            })
+        }
+        console.log("hola papu")
+        response.setHeader("Content-type", "application/json")
+        response.writeHead(200)
+        response.end(r)
+    })
+}
+
+const Update = (request, response, id) => {
+    let body = []
+
+    let query = {  }
+
+    let filter = {
+        _id: new ObjectId(id[1])
+    }
+
+    request
+    .on("data", (chunk) => {
+        body.push(chunk)
+    })
+    .on("end", () => {
+        body = Buffer.concat(body).toString()
+        query.$set = JSON.parse(body)
+        console.log(query)
+        updateFromDatabase(filter, query).then(e => {
+            console.log(e)
+        })
+    })
+    response.end("hola")
+}
+
+const Delete = (response, id) => {
+    if (!id) throw new Error("'id' field cannot be undefined")
+    const query = {
+        _id: new ObjectId(id[1])
+    }
+
+    console.log(query)
+
+    deletefromDatabase(query).then(e => {
+        console.log(e)
+        response.end("hola")
+    })
+}
+
+const mainHandler = (request, response) => {
+    if (request.method === "GET") {
+        if (request.url === "/api/video") {
+            Read(response)
+        }
+        if (/\/api\/video\/(\w+)/.test(request.url)) {
+            Read(response, /\/api\/video\/(\w+)/.exec(request.url))
+        }
+    }
+    else if (request.method === "POST") {
+        if (request.url === "/api/upload") {
+            Create(request, response)
+        }
+    }
+    else if (request.method === "DELETE") {
+        if (/\/api\/delete\/(\w+)/.test(request.url)) {
+            Delete(response, /\/api\/delete\/(\w+)/.exec(request.url))
+        }
+    }
+    else if (request.method === "PUT") {
+        if (/\/api\/edit\/(\w+)/.test(request.url)) {
+            Update(request, response, /\/api\/edit\/(\w+)/.exec(request.url))
+        }
+    }
+}
+
+const port = 8080
+const server = createServer(mainHandler);
+server.listen(port, "localhost", () => {
+    console.log(`Running at ${port} fyi`)
+}) 
+ 
 const uri = process.env.MONGO_URI
-
+ 
 let mongoClient = new MongoClient(uri, {
     serverApi: {
         version: ServerApiVersion.v1,
@@ -19,24 +185,17 @@ let mongoClient = new MongoClient(uri, {
 const run = async () => {
     try {
         await mongoClient.connect()
-    } finally {
-        //await mongoClient.close()
+    } catch (except) {
+        console.error(except)
     }
-    let hola = await mongoClient.db().admin().listDatabases();
-    hola.databases.forEach(e => console.log("-> " + e.name))
 
-    const rl = readline.createInterface(stdin, stdout) 
-    let chosenDB = await rl.question(">>> ")
+    const chosenDB = "hola"
+    const DB = mongoClient.db(chosenDB)
 
-    let DB = mongoClient.db(chosenDB);
-
-    let collectionList = await DB.listCollections({}, {}).toArray()
-    collectionList.forEach(e => console.log("-> " + e.name))
-    
-    let chosenCollection = await rl.question(">>> ")
-
+    const chosenCollection = "hola"
     let collection = DB.collection(chosenCollection).find({})
-    console.log(await collection.toArray())
+    
+    return (await collection.toArray())
 }
 
 run().catch(console.log)
