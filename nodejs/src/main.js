@@ -5,6 +5,7 @@ import {
 } from 'mongodb'
 
 import {createServer} from 'node:http'
+import {stringify} from 'node:querystring'
  
 //NOTE: this place has to handle all client requests
  
@@ -56,49 +57,58 @@ const Create = (request, response) => {
 
         insertAtDatabase(JSON.parse(newBody)).then(e => {
             console.log("hola papu")
-            response.setHeader("Content-type", "application/json")
-            response.writeHead(200)
             newVideo._id = e.insertedId.toString()
             response.end(JSON.stringify(newVideo))
-        })
 
+            response.setHeader("Content-type", "application/json")
+            response.setHeader("Access-Control-Allow-Origin", "*")
+            response.writeHead(200)
+        })
+    
         console.log(newVideo)
     })
 }
 
 const Read = (response, id) => {
+    let list = []
+    
     console.log(id)
     run().then(e => {
-        let r = ""
         let newVideo = new dataTemplate()
-        let comma = ""
+        
         if (id) {
-            e.forEach((elem, i) => {
-                newVideo.title = elem.title,
-                newVideo.description = elem.description,
-                newVideo.thumbnail = elem.thumbnail
-                newVideo._id = elem._id
-                comma = i === e.length - 1 ? "" : ","
-                if (id[1] === elem._id.toString()) {
-                    r += JSON.stringify(newVideo) + comma
-                }
-            })
-        }
-        else {
-            e.forEach((elem, i) => {
+            e.forEach((elem) => {
                 newVideo.title = elem.title,
                 newVideo.description = elem.description,
                 newVideo.thumbnail = elem.thumbnail
                 newVideo._id = elem._id
                 
-                comma = i === e.length - 1 ? "" : ","
-                r += JSON.stringify(newVideo) + comma
+                if (id[1] === elem._id.toString()) {
+                    list = elem
+                }
             })
         }
+        
+        else {
+            e.forEach((elem) => {
+                newVideo.title = elem.title,
+                newVideo.description = elem.description,
+                newVideo.thumbnail = elem.thumbnail
+                newVideo._id = elem._id
+                
+                list.push(elem)
+            })
+        }
+        
         console.log("hola papu")
+        
         response.setHeader("Content-type", "application/json")
+        response.setHeader("Access-Control-Allow-Origin", "*")
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+        response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+        response.setHeader("ngrok-skip-browser-warning", "true")
         response.writeHead(200)
-        response.end(r)
+        response.end(JSON.stringify(list))
     })
 }
 
@@ -123,6 +133,7 @@ const Update = (request, response, id) => {
             console.log(e)
         })
     })
+    response.setHeader("Access-Control-Allow-Origin", "*")
     response.end("hola")
 }
 
@@ -136,17 +147,18 @@ const Delete = (response, id) => {
 
     deletefromDatabase(query).then(e => {
         console.log(e)
+        response.setHeader("Access-Control-Allow-Origin", "*")
         response.end("hola")
     })
 }
 
 const mainHandler = (request, response) => {
     if (request.method === "GET") {
-        if (request.url === "/api/video") {
+        if (request.url === "/api/videos") {
             Read(response)
-        }
-        if (/\/api\/video\/(\w+)/.test(request.url)) {
-            Read(response, /\/api\/video\/(\w+)/.exec(request.url))
+        } 
+        if (/\/api\/videos\/(\w+)/.test(request.url)) {
+            Read(response, /\/api\/videos\/(\w+)/.exec(request.url))
         }
     }
     else if (request.method === "POST") {
@@ -164,6 +176,9 @@ const mainHandler = (request, response) => {
             Update(request, response, /\/api\/edit\/(\w+)/.exec(request.url))
         }
     }
+    else if (request.method === "OPTIONS") {
+        response.writeHead(200);
+    } 
 }
 
 const port = 8080
