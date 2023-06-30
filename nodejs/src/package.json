@@ -9,6 +9,7 @@
     "main": "main.js",
     "scripts": {
         "start": "node -r dotenv/config ./main.js",
+        "dev": "node --watch -r dotenv/config ./main.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [],
