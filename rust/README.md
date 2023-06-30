@@ -1,7 +1,7 @@
 <!-- markdownlint-disable MD033 -->
 # MongoDB with Rust
 
-<img align="right" width="200" src="https://yt3.googleusercontent.com/ytc/AGIKgqOXF1VtgNKqE1_BFyrcI6388NnKa5zoAwzVDqPJiw=s900-c-k-c0x00ffffff-no-rj" alt="professor woshingo"/>
+<img align="right" width="200" src="https://rustacean.net/assets/rustacean-flat-happy.png" alt="professor woshingo"/>
 
 This repo shows how to connect to MongoDB using the official Rust crate.
 
