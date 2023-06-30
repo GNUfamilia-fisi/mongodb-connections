@@ -24,14 +24,15 @@ videos of the Mexican youtuber [Woshingo](https://www.youtube.com/@Woshingo), sc
 
 ```toml
 [dependencies]
-# The official MongoDB Rust driver
-mongodb = "2.5.0"
-# For supporting async DB operations
-tokio = "1.28.2"
-# For data serialization and deserialization within Rust structs
-serde = { version = "1.0.163", features = ["derive"] }
+actix-web = "4.3.1"
+dotenv = "0.15.0"
 # Utilities for handling futures
 futures = "0.3.28"
+tokio = "1.28.2"
+pretty_env_logger = "0.5.0"
+mongodb = "2.5.0"
+# For data serialization and deserialization within Rust structs
+serde = { version = "1.0.163", features = ["derive"] }
 ```
 
 ## Running the code

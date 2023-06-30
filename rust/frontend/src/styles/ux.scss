@@ -1,0 +1,47 @@
+
+input::placeholder, textarea::placeholder, select::placeholder {
+  user-select: none;
+}
+
+button {
+  border: none;
+  outline: none;
+  background: transparent;
+  cursor: pointer;
+  color: white;
+}
+
+[contenteditable] {
+  outline: 0px solid transparent;
+}
+
+::-moz-selection { /* Code for Firefox */
+  color: #e6dfec;
+  background: #53445f;
+}
+
+::selection {
+  color: #ffffff;
+  background: #53445f;
+}
+
+html {
+  &::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  &::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.2);
+  }
+  &::-webkit-scrollbar-thumb{
+    border-radius: 10px;
+    background: rgba(254, 254, 254, 0.1);
+  }
+  &::-webkit-scrollbar-thumb:hover{
+  	background: rgba(254, 254, 254, 0.15);
+  }
+  &::-webkit-scrollbar-thumb:active{
+    background: rgba(254, 254, 254, 0.2);
+  }
+}

@@ -1,68 +1,63 @@
-use mongodb::{results::DatabaseSpecification, bson::Document};
-#[allow(unused)]
-use serde::{Serialize, Deserialize};
-use std::env;
+use actix_web::{middleware, HttpServer, App, web};
+use db::schemas::VideoData;
+use dotenv::dotenv;
 
-mod dotenv;
+mod db;
+mod routes;
 
-static APP_DB: &str = "sample_woshingo";
-static WOSHINGO_COLLECTION: &str = "metadata";
-// use std::convert::Infallible;
-
-// type WebResult<T> = Result<T, Rejection> // from warp
-
-fn print_db_info(db: &DatabaseSpecification) {
-    println!(" - {} ({} mb)", db.name, db.size_on_disk as f64 / (1024.0 * 1024.0));
+pub struct AppState {
+    pub app_name: String,
+    pub mongo_client: mongodb::Client,
+    pub videos_collection: mongodb::Collection<VideoData>,
 }
 
-fn print_video_info(video: &Document) {
-    let title = video.get_str("title").unwrap();
-    let duration = video.get_i32("duration").unwrap() as f32 / 60.0;
-    let url = video.get_str("url").unwrap();
-    println!("{} ({} min)\n{}\n", title, duration, url);
+impl AppState {
+    async fn init() -> Self {
+        let mongo_client = db::create_mongo_client()
+            .await
+            .expect("Couldn't connect to MongoDB");
+
+        let videos_collection = mongo_client.database("crud_app").collection::<VideoData>("videos6");
+
+        AppState {
+            app_name: String::from("Rust CRUD"),
+            mongo_client,
+            videos_collection
+        }
+    }
 }
 
-#[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    dotenv::parse()?;
-
-    let mongo_uri = env::var("MONGO_URI")
-        .expect("please define the MONGO_URI env variable");
-    // Create a mongodb client from a connection string
-    let client = mongodb::Client::with_uri_str(mongo_uri).await?;
-
-    println!("Listing databases...");
-    let db_names = client.list_databases(None, None).await?;
-    let exists_db = db_names.iter().any(|db_info| {
-        print_db_info(db_info);
-        db_info.name == APP_DB
-    });
-    println!();
-
-    if !exists_db {
-        eprintln!("Coudln't found DB '{}'", APP_DB);
-        return Ok(());
+#[actix_web::main]
+async fn main() -> std::io::Result<()> {
+    dotenv().ok();
+    if std::env::var_os("RUST_LOG").is_none() {
+        std::env::set_var("RUST_LOG", "actix_web=info");
     }
 
-    // To work with collections, there are methods that accepts instances of
-    // your documents, (say `db.insert_one`).
-    // That instances must implement the Serialize and Deserialize traits from `serde`.
-    // You can always use mongodb::bson::Document, however it's recommended to define
-    // your own types for serialization and deserialization
-    let woshingo = client
-        .database(APP_DB)
-        .collection::<Document>(WOSHINGO_COLLECTION);
+    let app_state = web::Data::new(AppState::init().await);
 
-    // Querying returns a Cursor type to iterate over
-    println!("Querying woshingo urls...");
-    let mut documents = woshingo.find(None, None).await?;
+    pretty_env_logger::init();
+    println!("🚀 Server started successfully!!!");
 
-    // Iterate over the results of the cursor.
-    // This trait is required to use `try_next()` on the cursor
-    use futures::stream::TryStreamExt;
-    while let Some(doc) = documents.try_next().await? {
-        print_video_info(&doc);
-    }
-
-    Ok(())
+    HttpServer::new(move || {
+        App::new().service(
+            web::scope("/api")
+            .app_data(app_state.clone())
+            .service(routes::api::healthcheck::healthcheck)
+            .service(routes::api::upload_video::upload_video)
+            .service(routes::api::upload_video::upload_video_options)
+            .service(routes::api::get_videos::get_videos)
+            .service(routes::api::get_video::get_video)
+            .service(routes::api::delete_video::delete_video)
+            .service(routes::api::delete_video::delete_video_options)
+            .service(routes::api::edit_video::edit_video_options)
+            .service(routes::api::edit_video::edit_video)
+        ).wrap(
+            middleware::DefaultHeaders::new()
+                .add(("Access-Control-Allow-Origin", "*"))
+        ).wrap(middleware::Logger::default())
+    })
+    .bind(("127.0.0.1", 8000))?
+    .run()
+    .await
 }

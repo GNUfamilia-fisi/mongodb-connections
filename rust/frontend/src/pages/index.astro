@@ -1,0 +1,30 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { VideosFeed } from '../components/VideosFeed';
+---
+
+<Layout title='La playlist'>
+	<header>
+		<img src="/musical_notes.png" width="30" height="30" alt="La Playlist logo">
+		<h1>La playlist</h1>
+	</header>
+	<VideosFeed client:load/>
+</Layout>
+
+<style lang='scss'>
+	h1 {
+		font-size: 24px;
+		padding: 0.5rem 0;
+		margin: 0;
+	}
+	img {
+		margin-right: 0.8rem;
+	}
+	header {
+		display: flex;
+		align-items: center;
+		background-color: rgb(44, 43, 43);
+		padding: 0.5rem 1rem !important;
+		margin: 0;
+	}
+</style>

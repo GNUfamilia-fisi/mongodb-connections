@@ -1,0 +1,115 @@
+.videoCard {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-items: flex-start;
+  padding: 8px;
+  background-color: #1f1f1f;
+  border-bottom: 1px solid #2f2f2f;
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  img {
+    height: 60px;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    border-radius: 2px;
+    user-select: none;
+  }
+
+  .number {
+    padding-left: 6px;
+    float: left;
+    min-width: 30px;
+    user-select: none;
+  }
+
+  .content {
+    padding-left: 15px;
+    flex-grow: 1;
+    max-width: calc(100% - 110px);
+
+    h3 {
+      font-size: medium;
+      width: fit-content;
+      font-weight: 400;
+      padding: 0;
+      margin: 0;
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+    section div {
+      width: calc(100% - 110px);
+      font-size: 14px;
+      color: #cccccc;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  }
+
+  .controllers {
+    user-select: none;
+    position: absolute;
+    right: 10px;
+    bottom: 12px;
+
+    button {
+      color: #444444;
+      &:hover {
+        color: #8b8b8b !important;
+      }
+    }
+  }
+
+  // make odd cards darker
+  &:nth-child(odd) {
+    background-color: #1a1a1a;
+  }
+}
+
+.videoCard.hovered {
+  .controllers {
+    button {
+      color: #535353;
+    }
+  }
+}
+
+.videoCard.editing {
+  .content {
+    h3 {
+      // outline bottom
+      border-bottom: 1px solid #b981cc;
+      &:focus {
+        outline: none;
+      }
+    }
+    section div {
+      border-bottom: 1px solid #b981cc;
+      text-overflow: none;
+      -webkit-line-clamp: unset;
+    }
+  }
+
+  .controllers {
+    button {
+      color: #866691;
+
+      &:hover {
+        color: #b981cc !important;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .videoCard {
+    .number {
+      display: none;
+    }
+  }
+}

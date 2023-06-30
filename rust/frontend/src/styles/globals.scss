@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --color-primary: #f7f7f7;
+  --font-primary: Ubuntu, system-ui;
+}
+
+@keyframes colorRainbow {
+  0% {
+    color: #bb4a4a;
+  }
+  10% {
+    color: #bb774a;
+  }
+  20% {
+    color: #bbab4a;
+  }
+  30% {
+    color: #8bbb4a;
+  }
+  40% {
+    color: #4abb4a;
+  }
+  50% {
+    color: #4abb8e;
+  }
+  60% {
+    color: #4abbcc;
+  }
+  70% {
+    color: #4a8ebb;
+  }
+  80% {
+    color: #4a4abb;
+  }
+  90% {
+    color: #8e4abb;
+  }
+  100% {
+    color: #bb4a86;
+  }
+}
+
+html {
+  font-family: var(--font-primary);
+  background-color: #181818;
+  height: 100%;
+  color: var(--color-primary);
+  padding: 2rem 15rem;
+
+  transition: padding 0.2s ease-in-out;
+}
+
+@media (max-width: 1440px) {
+  html {
+    padding: 2rem 10rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  html {
+    padding: 2rem 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  html {
+    padding: 1rem 1rem;
+  }
+}
+
+// mobile
+@media (max-width: 480px) {
+  html {
+    padding: 4px;
+  }
+}
+
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+
+main {
+  padding: 0;
+}
+
+code {
+  font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
+    Bitstream Vera Sans Mono, Courier New, monospace;
+}
