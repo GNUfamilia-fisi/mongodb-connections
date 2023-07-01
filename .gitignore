@@ -1,6 +1,7 @@
 .vscode/
 .env
 !rust/.env
+!frontend/.env
 target/
 php/vendor/
 node_modules
