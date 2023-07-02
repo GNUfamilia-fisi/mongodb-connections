@@ -60,7 +60,7 @@ const Create = (request, response) => {
 
             response.writeHead(200, {
                 "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Methods": "GET, POST, PATCH, DELETE, OPTIONS",
+                "Access-Control-Allow-Methods": "GET, POST, PATCH, DELETE, OPTIONS, PUT",
                 "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
                 "ngrok-skip-browser-warning": "true",
                 "Content-Type": "application/json"
@@ -110,7 +110,7 @@ const Read = (response, id) => {
         // response.setHeader()
         response.writeHead(200, {
             "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "GET, POST, PATCH, DELETE, OPTIONS",
+            "Access-Control-Allow-Methods": "GET, POST, PATCH, DELETE, OPTIONS, PUT",
             "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
             "ngrok-skip-browser-warning": "true",
             "Content-Type": "application/json"
@@ -142,7 +142,7 @@ const Update = (request, response, id) => {
     })
     response.writeHead(200, {
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET, POST, PATCH, DELETE, OPTIONS",
+        "Access-Control-Allow-Methods": "GET, POST, PATCH, DELETE, OPTIONS, PUT",
         "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
         "ngrok-skip-browser-warning": "true",
         "Content-Type": "application/json"
@@ -162,7 +162,7 @@ const Delete = async (response, id) => {
     console.log({ delete_result });
     response.writeHead(200, {
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET, POST, PATCH, DELETE, OPTIONS",
+        "Access-Control-Allow-Methods": "GET, POST, PATCH, DELETE, OPTIONS, PUT",
         "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
         "ngrok-skip-browser-warning": "true",
         "Content-Type": "application/json"
@@ -197,7 +197,7 @@ const mainHandler = (request, response) => {
     else if (request.method === "OPTIONS") {
         response.writeHead(200, {
             "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "GET, POST, PATCH, DELETE, OPTIONS",
+            "Access-Control-Allow-Methods": "GET, POST, PATCH, DELETE, OPTIONS, PUT",
             "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
         });
         response.end();
