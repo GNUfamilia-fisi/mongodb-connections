@@ -55,13 +55,7 @@ export function VideoCard({ position, video }: Props) {
         {position}
       </div>
       <div>
-        {
-          video.data.thumbnail.startsWith('http') ? (
-            <img src={video.data.thumbnail} />
-          ) : (
-            <img src={`data:image/jpeg;base64,${video.data.thumbnail}`} />
-          )
-        }
+        <img src={video.data.thumbnail} />
       </div>
       <div className={styles.content}>
         <h3>
